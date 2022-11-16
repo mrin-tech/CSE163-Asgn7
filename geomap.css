@@ -1,0 +1,21 @@
+
+body{
+    background-color: #E6E6E6;
+}
+
+p{
+    text-indent: 40px;
+}
+
+#tooltip {
+  position: absolute;
+  text-align: left;
+  width: 170px;
+  height: 50px;
+  font: 10px sans-serif;
+  background: rgba(0,0,0,.8);
+  border: 2px solid black;
+  pointer-events: none;
+  opacity: 0.9;
+  padding-right: 20px;
+}
