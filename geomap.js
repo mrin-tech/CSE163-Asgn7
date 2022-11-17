@@ -4,7 +4,7 @@
 // - - https://sureshlodha.github.io/CSE163_Spring2020/projects/pamidi/epp.html
 // json file is from the NC dept. of Environmental Quality
 // https://data-ncdenr.opendata.arcgis.com/datasets/nc-counties/explore?location=34.614981%2C-79.919249%2C5.85
-// 
+// https://github.com/christianbnvdz/CSE163/tree/master/geomap
 
 var svg = d3.select( "body" )
           .append( "svg" )
@@ -46,7 +46,7 @@ var color = d3.scaleThreshold()
     .range(d3.schemeOrRd[7]);
 
 // second color for the visualization
-var colorScale = d3.scaleThreshold()
+var color2 = d3.scaleThreshold()
                    .domain([0, 100, 250, 500, 750, 1000, 2000])
                    .range(d3.schemeGreens[7]);
 
@@ -103,8 +103,8 @@ d3.csv("ncdata.csv").then(function(popData){
 
   // draw the legend rectangle  
   g.selectAll("rect")
-    .data(colorScale.range().map(function(d) {
-        d = colorScale.invertExtent(d);
+    .data(color2.range().map(function(d) {
+        d = color2.invertExtent(d);
         if (d[0] == null) d[0] = x.domain()[0];
         if (d[1] == null) d[1] = x.domain()[1];
         return d;
@@ -113,7 +113,7 @@ d3.csv("ncdata.csv").then(function(popData){
       .attr("height", 8)
       .attr("x", function(d) { return x(d[0]); })
       .attr("width", function(d) { return x(d[1]) - x(d[0]); })
-      .attr("fill", function(d) { return colorScale(d[0]); });
+      .attr("fill", function(d) { return color2(d[0]); });
 
   // draw the text of the legend
   g.append("text")
@@ -128,7 +128,7 @@ d3.csv("ncdata.csv").then(function(popData){
   // draw the ticks along the legend
   g.call(d3.axisBottom(x)
       .tickSize(13)
-      .tickValues(colorScale.domain()))
+      .tickValues(color2.domain()))
       .select(".domain")
       .remove();
   
@@ -138,7 +138,7 @@ d3.csv("ncdata.csv").then(function(popData){
             .enter()
             .append("path")
             .attr("d", pathGenerator)
-            .attr("fill", function(d){console.log(d.properties.value); return colorScale(d.properties.value);});
+            .attr("fill", function(d){console.log(d.properties.value); return color2(d.properties.value);});
 
   //draw the tooltip
   tooltip = d3.select("body")
@@ -185,8 +185,8 @@ function changeColor(geoStates) {
   if (colorToggle == false) {
      // draw the legend
      g.selectAll("rect")
-      .data(colorScale.range().map(function(d) {
-          d = colorScale.invertExtent(d);
+      .data(color2.range().map(function(d) {
+          d = color2.invertExtent(d);
           if (d[0] == null) d[0] = x.domain()[0];
           if (d[1] == null) d[1] = x.domain()[1];
           return d;
@@ -195,7 +195,7 @@ function changeColor(geoStates) {
         .attr("height", 8)
         .attr("x", function(d) { return x(d[0]); })
         .attr("width", function(d) { return x(d[1]) - x(d[0]); })
-        .attr("fill", function(d) { return colorScale(d[0]); });
+        .attr("fill", function(d) { return color2(d[0]); });
       // draws the text on the legend
       g.append("text")
           .attr("class", "caption")
@@ -208,7 +208,7 @@ function changeColor(geoStates) {
       // draws the ticks on the legend
       g.call(d3.axisBottom(x)
           .tickSize(13)
-          .tickValues(colorScale.domain()))
+          .tickValues(color2.domain()))
         .select(".domain")
           .remove();
 
@@ -217,7 +217,7 @@ function changeColor(geoStates) {
                 .enter()
                 .append("path")
                 .attr("d", pathGenerator)
-                .attr("fill", function(d){return colorScale(d.properties.value);});    
+                .attr("fill", function(d){return color2(d.properties.value);});    
 
      tooltip = d3.select("body")
             .data(geoStates)
