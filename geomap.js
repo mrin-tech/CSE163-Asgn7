@@ -42,16 +42,12 @@ var toggle = false;
 
 // the color of the one visualization
 var color = d3.scaleThreshold()
-    .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
-    .range(d3.schemeOrRd[9]);
+    .domain([0, 100, 250, 500, 750, 1000, 2000])
+    .range(d3.schemeOrRd[7]);
 
-//Keep an array of the output color range
-//var colorRange = ["rgb(250, 250, 250)", "rgb(255, 180, 180)", 
-//                  "rgb(255, 100, 100)", "rgb(255, 30, 30)", 
-//                  "rgb(200, 0, 0)", "rgb(128, 0, 0)", "rgb(64, 0, 0)"];
-////Make a quantized scale for assigning fill color to states
+// second color for the visualization
 var colorScale = d3.scaleThreshold()
-                   .domain([0, 50, 100, 250, 500, 750, 1000])
+                   .domain([0, 100, 250, 500, 750, 1000, 2000])
                    .range(d3.schemeGreens[7]);
 
 // toggle to switch between colors
@@ -76,7 +72,7 @@ var x = d3.scaleSqrt()
 var geoStates;
 
 //  draw the Albers equal-area conic projection
-var projection = d3.geoAlbers()
+var projection = d3.geoAlbers();
 
 //Create a path generator
 var pathGenerator = d3.geoPath().projection(projection);
@@ -88,7 +84,7 @@ d3.csv("ncdata.csv").then(function(popData){
   geoStates = geoData.features;
   console.log("states from geoData.features:");
   console.log(geoStates);
-  
+  projection.fitExtent([ [ 0, 0 ], [ width, height ] ], geoData);
   // iterate through the csv file to get the state, county, and density
   for (var i = 0; i < popData.length; ++i) {
       var stateName = popData[i].USstate; // only NC
